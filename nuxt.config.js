@@ -5,5 +5,9 @@ module.exports = {
 	bootstrapVue: {
     icons: true
   },
-	target: 'static'
+	target: 'static',
+	env: {
+		PARK_API_TOKEN: process.env.PARK_API_TOKEN,
+		MAPBOX_TOKEN: process.env.MAPBOX_TOKEN
+	}
 }

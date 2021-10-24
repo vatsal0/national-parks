@@ -1,7 +1,7 @@
 const axios = require('axios')
 
 function request(path, params={}) {
-	params['api_key'] = 'kxBESfnCgDMrhW0nCqwrx4dLJyNE5cBVRewJCGj2' 
+	params['api_key'] = process.env.PARK_API_TOKEN 
 	return axios({
 		method: 'get',
 		url: 'https://developer.nps.gov/api/v1' + path,

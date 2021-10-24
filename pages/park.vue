@@ -6,7 +6,7 @@
 				<p>{{new Date(exception.startDate).toLocaleDateString("en-US", dateOptions)}} through {{new Date(exception.endDate).toLocaleDateString("en-US", dateOptions)}}</p>
 				<b-row v-for="day in days" :key="day">
 					<b-col>{{day}}</b-col>
-					<b-col>{{exception.exceptionHours[day.toLowerCase()]}}</b-col>
+					<b-col>{{exception.exceptionHours[day.toLowerCase()] || "Closed"}}</b-col>
 				</b-row>
 			</div>
 		</b-modal>
@@ -177,7 +177,7 @@ export default {
 
 				this.$nextTick(() => {
 					new mapboxgl.Map({
-						accessToken: 'pk.eyJ1IjoiZmF0c2FsIiwiYSI6ImNrdjRsMXhuYjExajgyb25ueDVweGpkeG4ifQ._KkPBZ0WYTdUFWIq1lErpg',
+						accessToken: process.env.MAPBOX_TOKEN,
 						container: 'map',
 						style: 'mapbox://styles/mapbox/streets-v11',
 						center: [parseFloat(this.parkData.longitude), parseFloat(this.parkData.latitude)],
