@@ -3,10 +3,10 @@
 		no-body 
 		bg-variant="dark" 
 		text-variant="white"
-		class="my-2 mh-100">
+		class="my-2 overflow-hidden">
 		<b-row no-gutters>
 			<b-col md="5" class="d-flex">
-				<b-card-img fluid :src="park.images[0].url" :alt="park.images[0].altText" class="rounded-0 my-auto"></b-card-img>
+				<b-card-img-lazy height="300rem" :src="park.images[0].url" :alt="park.images[0].altText" class="rounded-0 my-auto"></b-card-img-lazy>
 			</b-col>
 			<b-col md="7">
 				<b-card-body :title="park.fullName">
