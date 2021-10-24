@@ -6,8 +6,8 @@
 		class="my-2 overflow-hidden">
 		<b-row no-gutters>
 			<b-col md="5" class="d-flex">
-				<b-aspect aspect="16:9">
-					<b-card-img-lazy height="300rem" :src="park.images[0].url" :alt="park.images[0].altText" class="rounded-0 my-auto"></b-card-img-lazy>
+				<b-aspect :aspect="3" class="my-auto mx-auto">
+					<b-card-img-lazy height="300rem" :src="park.images[0].url" :alt="park.images[0].altText" class="rounded-0"></b-card-img-lazy>
 				</b-aspect>
 			</b-col>
 			<b-col md="7">
