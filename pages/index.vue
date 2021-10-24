@@ -1,7 +1,14 @@
 <template>
 	<div>
 		<Navbar />
-		<b-container>
+		<b-container v-if="activities.length == 0" class="d-flex mt-3">
+			<div class="justify-content-center align-items-center mx-auto text-center">
+				<h3>Loading data, hold on...</h3>
+				<b-spinner class="mt-1" variant="warning"></b-spinner>
+			</div>
+		</b-container>
+
+		<b-container v-else>
 			<div class="my-2 text-center">
 				<h1>Welcome!</h1>
 				<h3>Select from the list of activities below:</h3>
@@ -29,11 +36,18 @@
 				aria-controls="parkList"
 				align="center"
 				first-number
-				last-number
-				></b-pagination>
+				last-number />
 				<ul id="parkList">
 						<ParkCard v-for="park in parkPage" :key="park.parkCode" :park="park" />
 				</ul>
+				<b-pagination
+				v-model="page"
+				:total-rows="parks.length"
+				:per-page="5"
+				aria-controls="parkList"
+				align="center"
+				first-number
+				last-number />
 			</div>
 
 			<div v-else-if="selected.length > 0" class="text-center">

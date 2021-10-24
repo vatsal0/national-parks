@@ -3,7 +3,7 @@
 		no-body 
 		bg-variant="dark" 
 		text-variant="white"
-		class="overflow-hidden my-2">
+		class="my-2 mh-100">
 		<b-row no-gutters>
 			<b-col md="5" class="d-flex">
 				<b-card-img :src="park.images[0].url" :alt="park.images[0].altText" class="rounded-0 my-auto"></b-card-img>
