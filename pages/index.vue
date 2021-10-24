@@ -8,7 +8,7 @@
 			</div>
 		</b-container>
 
-		<b-container v-else>
+		<b-container v-else fluid="md">
 			<div class="my-2 text-center">
 				<h1>Welcome!</h1>
 				<h3>Select from the list of activities below:</h3>
