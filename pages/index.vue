@@ -1,7 +1,7 @@
 <template>
 	<div>
 		<Navbar />
-		<b-container v-if="activities.length == 0" class="d-flex mt-3">
+		<b-container v-if="activities.length == 0 || this.allParks.length == 0" class="d-flex mt-3">
 			<div class="justify-content-center align-items-center mx-auto text-center">
 				<h3>Loading data, hold on...</h3>
 				<b-spinner class="mt-1" variant="warning"></b-spinner>
@@ -36,7 +36,8 @@
 				aria-controls="parkList"
 				align="center"
 				first-number
-				last-number />
+				last-number 
+				pills/>
 				<ul id="parkList">
 						<ParkCard v-for="park in parkPage" :key="park.parkCode" :park="park" />
 				</ul>
@@ -47,7 +48,8 @@
 				aria-controls="parkList"
 				align="center"
 				first-number
-				last-number />
+				last-number 
+				pills/>
 			</div>
 
 			<div v-else-if="selected.length > 0" class="text-center">
@@ -98,34 +100,44 @@ export default {
 
 		parkAPI.getAllParks().then(data => {
 			this.allParks = data.data.data
+			this.parks = this.allParks
+			this.loadPage(this.page)
 		})
 	},
 	watch: {
 		selected(newArray) {
-			var indexList = newArray.map(index => this.activities[index].id).join(',')
-			this.loading = true
+			if (newArray.length > 0) {
+				var indexList = newArray.map(index => this.activities[index].id).join(',')
+				this.loading = true
 
-			parkAPI.getParksByActivity(indexList).then(data => {
-				var activityData = data.data.data
+				parkAPI.getParksByActivity(indexList).then(data => {
+					var activityData = data.data.data
 
-				// Merge the results in linear time
-				var parkCodeTable = {}
+					// Merge the results in linear time
+					var parkCodeTable = {}
 
-				activityData.forEach((activity, i) => {
-					activity.parks.forEach((park, j) => {
-						if (i == 0) {
-							parkCodeTable[park.parkCode] = 1
-						} else if (park.parkCode in parkCodeTable) {
-							parkCodeTable[park.parkCode] += 1
-						}
-					})
-				});
+					activityData.forEach((activity, i) => {
+						activity.parks.forEach((park, j) => {
+							if (i == 0) {
+								parkCodeTable[park.parkCode] = 1
+							} else if (park.parkCode in parkCodeTable) {
+								parkCodeTable[park.parkCode] += 1
+							}
+						})
+					});
 
-				this.parks = this.allParks.filter(park => park.parkCode in parkCodeTable && parkCodeTable[park.parkCode] == activityData.length)
-				this.loading = false
+					this.parks = this.allParks.filter(park => park.parkCode in parkCodeTable && parkCodeTable[park.parkCode] == activityData.length)
+					this.loading = false
+
+
+					this.page = 1
+					this.loadPage(this.page)
+				})
+			} else {
+				this.parks = this.allParks
 				this.page = 1
 				this.loadPage(this.page)
-			})
+			}
 		},
 		page(newPage) {
 			this.loadPage(newPage)
