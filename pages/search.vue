@@ -49,7 +49,7 @@ export default {
 			this.query = query
 			this.loading = true
 			
-			parkAPI.allParks().then(data => {
+			parkAPI.getAllParks().then(data => {
 				this.results = data.data.data.filter(park => park.name.toLowerCase().includes(query.toLowerCase()))
 				this.loading = false
 			}) 

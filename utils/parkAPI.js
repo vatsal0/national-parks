@@ -10,10 +10,22 @@ function request(path, params={}) {
 }
 
 export default {
-	allParks() {
+	getAllParks() {
 		return request('/parks', {limit: 500})
 	},
+	getAllActivities() {
+		return request('/activities')
+	},
+	getActivities(query) {
+		return request('/activities', {q: query})
+	},
 	getPark(parkCode) {
+		return request('/parks', {parkCode: parkCode})
+	},
+	getParksByActivity(activityId) {
+		return request('/activities/parks', {id: activityId})
+	},
+	getParksByCode(parkCode) {
 		return request('/parks', {parkCode: parkCode})
 	},
 	getWebcams(parkCode) {

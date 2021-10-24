@@ -7,6 +7,7 @@
 		
 		<b-nav-form @submit.stop.prevent="searchParks()" class="ml-auto">
 			<b-form-input v-model="parkSearch" autocomplete="off" size="sm" class="mr-sm-2" placeholder="Search parks"></b-form-input>
+			<b-button @click="searchParks()" variant="success" size="sm">Go</b-button>
 		</b-nav-form>
 	</b-navbar>
 </template>
@@ -28,7 +29,7 @@ export default {
 		}
 	},
 	mounted() {
-		parkAPI.allParks().then(data => {
+		parkAPI.getAllParks().then(data => {
 			this.parks = data.data.data
 		}) 
 	}
