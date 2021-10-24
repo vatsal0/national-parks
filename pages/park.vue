@@ -12,7 +12,13 @@
 		</b-modal>
 
 		<Navbar />
-		<b-container v-if="parkData == undefined" class="text-center mt-2">
+		<b-container v-if="loading" class="d-flex mt-3">
+			<div class="justify-content-center align-items-center mx-auto text-center">
+				<h3>Loading...</h3>
+				<b-spinner class="mt-1" variant="warning"></b-spinner>
+			</div>
+		</b-container>
+		<b-container v-else-if="parkData == undefined" class="text-center mt-2">
 			<h1>Park not found.</h1>
 		</b-container>
 		<b-container v-else class="mt-2">
@@ -113,8 +119,8 @@
 </template>
 
 <script>
-import parkAPI from '../../utils/parkAPI.js'
-import Navbar from '../../components/Navbar.vue'
+import parkAPI from '../utils/parkAPI.js'
+import Navbar from '../components/Navbar.vue'
 
 export default {
 	components: {
@@ -122,6 +128,7 @@ export default {
 	},
 	data() {
 		return {
+			loading: true,
 			parkData: {},
 			slide: 0,
 			days: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'],
@@ -161,24 +168,29 @@ export default {
 		}
 	}, 
 	mounted() {
-		parkAPI.getPark(this.$route.params.parkCode).then(data => {
+		parkAPI.getPark(this.$route.query.parkCode).then(data => {
 			this.parkData = data.data.data[0]
-			const mapboxgl = require('mapbox-gl')
+			this.loading = false
 
-			console.log(this.parkData.lat)
+			if (this.parkData != undefined) {
+				const mapboxgl = require('mapbox-gl')
 
-			const map = new mapboxgl.Map({
-				accessToken: 'pk.eyJ1IjoiZmF0c2FsIiwiYSI6ImNrdjRsMXhuYjExajgyb25ueDVweGpkeG4ifQ._KkPBZ0WYTdUFWIq1lErpg',
-				container: 'map',
-				style: 'mapbox://styles/mapbox/streets-v11',
-				center: [parseFloat(this.parkData.longitude), parseFloat(this.parkData.latitude)],
-				zoom: 15,
-				maxZoom: 18,
-				maxBounds: [
-					[parseFloat(this.parkData.longitude) - .3, parseFloat(this.parkData.latitude) - .1],
-					[parseFloat(this.parkData.longitude) + .3, parseFloat(this.parkData.latitude) + .1]
-				]
-			})
+				this.$nextTick(() => {
+					new mapboxgl.Map({
+						accessToken: 'pk.eyJ1IjoiZmF0c2FsIiwiYSI6ImNrdjRsMXhuYjExajgyb25ueDVweGpkeG4ifQ._KkPBZ0WYTdUFWIq1lErpg',
+						container: 'map',
+						style: 'mapbox://styles/mapbox/streets-v11',
+						center: [parseFloat(this.parkData.longitude), parseFloat(this.parkData.latitude)],
+						zoom: 15,
+						maxZoom: 18,
+						maxBounds: [
+							[parseFloat(this.parkData.longitude) - .3, parseFloat(this.parkData.latitude) - .1],
+							[parseFloat(this.parkData.longitude) + .3, parseFloat(this.parkData.latitude) + .1]
+						]
+					})
+				})
+	
+			}
 		})
 	}
 }

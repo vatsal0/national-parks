@@ -14,7 +14,7 @@
 		<b-card-text>
 			<b-badge pill variant="warning" v-for="activity in park.activities" :key="activity.id" class="mr-1">{{activity.name}}</b-badge>
 		</b-card-text>
-		<b-button :href="'/park/' + park.parkCode" variant="primary">Learn more</b-button>
+		<b-button :href="'/park?parkCode=' + park.parkCode" variant="primary">Learn more</b-button>
 	</b-card>
 </template>
 
