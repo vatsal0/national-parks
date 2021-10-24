@@ -7,7 +7,7 @@
 		<b-row no-gutters>
 			<b-col lg="5" class="d-flex">
 				<b-aspect :aspect="3" class="my-auto mx-auto">
-					<b-card-img-lazy height="300rem" :src="park.images[0].url" :alt="park.images[0].altText" class="rounded-0"></b-card-img-lazy>
+					<b-card-img-lazy :src="park.images[0].url" :alt="park.images[0].altText" class="rounded-0"></b-card-img-lazy>
 				</b-aspect>
 			</b-col>
 			<b-col lg="7">
