@@ -12,6 +12,11 @@ import Navbar from '../components/Navbar.vue'
 export default {
 	components: {
 		Navbar
+	},
+	head() {
+		return {
+			title: "National Park Service Info"
+		}
 	}
 }
 </script>

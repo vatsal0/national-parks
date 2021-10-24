@@ -154,6 +154,7 @@ export default {
 	},
 	head () {
 		return {
+			title: this.parkData.fullName,
 			script: [
 				{
 					src: 'https://cdn.klokantech.com/mapbox-gl-js/v0.43.0/mapbox-gl.js'

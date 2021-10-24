@@ -55,6 +55,11 @@ export default {
 			}) 
 		}
 	},
+	head() {
+		return {
+			title: "Search results for '" + this.query + "'"
+		}
+	},
 	beforeRouteUpdate(to, from, next) {
 		// Vue router does not reload the page if redirected to the same link with different query parameters. So, we search again manually.
 		if (from.query.query != to.query.query) {
