@@ -6,7 +6,6 @@
 				<h3>Fetching results...</h3>
 				<b-spinner class="mt-1" variant="warning"></b-spinner>
 			</div>
-			
 		</b-container>
 
 		<b-container v-else class="d-flex justify-content-center mt-3">
@@ -15,25 +14,7 @@
 					<h3>Search results for "{{query}}"</h3>
 				</div>
 				<b-list-group>
-					<b-card 
-					v-for="result in results" 
-					:key="result.parkCode" 
-					:title="result.fullName" 
-					:img-src="result.images[0].url"
-					img-alt="Image"
-					img-left
-					img-width="25%"
-					bg-variant="dark" 
-					text-variant="white"
-					class="my-2">
-						<b-card-text>
-							{{result.description}}
-						</b-card-text>
-						<b-card-text>
-							<b-badge pill variant="warning" v-for="activity in result.activities" :key="activity.id" class="mr-1">{{activity.name}}</b-badge>
-						</b-card-text>
-						<b-button :href="'/park/' + result.parkCode" variant="primary">Learn more</b-button>
-					</b-card>
+					<ParkCard v-for="result in results" :key="result.parkCode" :park="result" />
 				</b-list-group>
 			</div>
 			<div v-else>
@@ -49,10 +30,12 @@
 <script>
 import parkAPI from '../utils/parkAPI.js'
 import Navbar from '../components/Navbar.vue'
+import ParkCard from '../components/ParkCard.vue'
 
 export default {
 	components: {
-		Navbar
+		Navbar,
+		ParkCard
 	},
 	data() {
 		return {
@@ -73,7 +56,10 @@ export default {
 		}
 	},
 	beforeRouteUpdate(to, from, next) {
-		this.search(to.query.query)
+		// Vue router does not reload the page if redirected to the same link with different query parameters. So, we search again manually.
+		if (from.query.query != to.query.query) {
+			this.search(to.query.query)
+		}
     next()
   },
 	mounted() {
