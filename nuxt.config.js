@@ -4,5 +4,6 @@ module.exports = {
 	],
 	bootstrapVue: {
     icons: true
-  }
+  },
+	target: static
 }
