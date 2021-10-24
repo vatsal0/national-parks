@@ -11,7 +11,7 @@
 		<b-container v-else fluid="md">
 			<div class="my-2 text-center">
 				<h1>Welcome!</h1>
-				<h3>Select from the list of activities below:</h3>
+				<h3>Select from the list of activities below to filter your search:</h3>
 			</div>
 
 			<div class="text-center mb-4">
@@ -53,7 +53,7 @@
 			</div>
 
 			<div v-else-if="selected.length > 0" class="text-center">
-				<h3>No parks were found with all of these activities.</h3>
+				<h3>No parks were found with the selected activities.</h3>
 				<h6>Try broadening your search!</h6>
 			</div>
 			

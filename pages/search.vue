@@ -8,7 +8,7 @@
 			</div>
 		</b-container>
 
-		<b-container v-else class="d-flex justify-content-center mt-3">
+		<b-container v-else class="d-flex justify-content-center mt-3" fluid="md">
 			<div v-if="results.length > 0">
 				<div class="justify-content-center align-items-center mx-auto text-center my-3">
 					<h3>Search results for "{{query}}"</h3>
