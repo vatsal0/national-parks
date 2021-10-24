@@ -35,7 +35,7 @@ export default {
 	},
 	head () {
 		return {
-			title: this.parkData ? this.parkData.fullName : "Park not found"
+			title: this.parkData ? this.parkData.fullName : "Park not found."
 		}
 	}, 
 	mounted() {

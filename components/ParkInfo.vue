@@ -1,5 +1,7 @@
 <template>
 	<div>
+		<WebcamModal ref="webcamModal" />
+
 		<b-modal id="exceptions-modal" title="Operating Hours Exceptions">
 			<div v-for="exception, index in exceptions" :key="index" class="mb-2">
 				<h6>{{exception.name}}</h6>
@@ -40,7 +42,7 @@
 						</h6>
 						
 						<p>{{operatingHours.description}}</p>
-						
+
 						<b-row v-for="day in days" :key="day">
 							<b-col>{{day}}</b-col>
 							<b-col>{{operatingHours.standardHours[day.toLowerCase()]}}</b-col>
@@ -106,8 +108,12 @@
 
 <script>
 import parkAPI from '../utils/parkAPI.js'
+import WebcamModal from './WebcamModal.vue'
 
 export default {
+	components: {
+		WebcamModal
+	},
 	props: {
 		parkData: Object
 	},
@@ -131,8 +137,8 @@ export default {
 			this.$bvModal.show('exceptions-modal')
 		},
 		showWebcams() {
-			parkAPI.getWebcams(this.parkCode).then(data => {
-				console.log(data.data.data.filter(cam => cam.images.length > 0))
+			parkAPI.getWebcams(this.parkData.parkCode).then(data => {
+				this.$refs.webcamModal.load(data.data.data.filter(cam => cam.images.length > 0))
 			})
 		}
 	},
