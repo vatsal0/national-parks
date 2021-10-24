@@ -9,6 +9,7 @@
 	"dependencies": {
 		"axios": "^0.23.0",
 		"bootstrap-vue": "^2.21.2",
+		"mapbox-gl": "^2.5.1",
 		"nuxt": "^2.15.8"
 	}
 }

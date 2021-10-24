@@ -13,4 +13,10 @@ export default {
 	allParks() {
 		return request('/parks', {limit: 500})
 	},
+	getPark(parkCode) {
+		return request('/parks', {parkCode: parkCode})
+	},
+	getWebcams(parkCode) {
+		return request('/webcams', {parkCode: parkCode, limit: 500})
+	}
 }

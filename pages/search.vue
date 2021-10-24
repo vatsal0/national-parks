@@ -30,12 +30,9 @@
 							{{result.description}}
 						</b-card-text>
 						<b-card-text>
-							<b-badge pill v-for="activity in result.activities" :key="activity.id" class="mr-1">{{activity.name}}</b-badge>
+							<b-badge pill variant="warning" v-for="activity in result.activities" :key="activity.id" class="mr-1">{{activity.name}}</b-badge>
 						</b-card-text>
-						<b-button :href="'/parks/' + result.parkCode" variant="primary">Learn more</b-button>
-					</b-card>
-					<b-card >
-
+						<b-button :href="'/park/' + result.parkCode" variant="primary">Learn more</b-button>
 					</b-card>
 				</b-list-group>
 			</div>
