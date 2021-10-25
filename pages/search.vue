@@ -13,9 +13,25 @@
 				<div class="justify-content-center align-items-center mx-auto text-center my-3">
 					<h3>Search results for "{{query}}"</h3>
 				</div>
+				<b-pagination
+				v-model="page"
+				:total-rows="results.length"
+				:per-page="5"
+				align="center"
+				first-number
+				last-number 
+				pills/>
 				<b-list-group>
-					<ParkCard v-for="result in results" :key="result.parkCode" :park="result" />
+						<ParkCard v-for="park in parkPage" :key="park.parkCode" :park="park" />
 				</b-list-group>
+				<b-pagination
+				v-model="page"
+				:total-rows="results.length"
+				:per-page="5"
+				align="center"
+				first-number
+				last-number 
+				pills/>
 			</div>
 			<div v-else>
 				<div class="justify-content-center align-items-center mx-auto text-center">
@@ -41,7 +57,9 @@ export default {
 		return {
 			query: '',
 			results: [],
-			loading: false
+			loading: false,
+			parkPage: [],
+			page: 1
 		}
 	},
 	methods: {
@@ -51,8 +69,13 @@ export default {
 			
 			parkAPI.getAllParks().then(data => {
 				this.results = data.data.data.filter(park => park.name.toLowerCase().includes(query.toLowerCase()))
+				this.page = 1
+				this.loadPage(this.page)
 				this.loading = false
 			}) 
+		},
+		loadPage(page) {
+			this.parkPage = this.results.slice((page - 1) * 5, page * 5)
 		}
 	},
 	head() {
@@ -69,6 +92,11 @@ export default {
   },
 	mounted() {
 		this.search(this.$route.query.query)
+	},
+	watch: {
+		page(newPage) {
+			this.loadPage(newPage)
+		}
 	}
 }
 </script>

@@ -33,19 +33,17 @@
 				v-model="page"
 				:total-rows="parks.length"
 				:per-page="5"
-				aria-controls="parkList"
 				align="center"
 				first-number
 				last-number 
 				pills/>
-				<ul id="parkList">
+				<b-list-group>
 						<ParkCard v-for="park in parkPage" :key="park.parkCode" :park="park" />
-				</ul>
+				</b-list-group>
 				<b-pagination
 				v-model="page"
 				:total-rows="parks.length"
 				:per-page="5"
-				aria-controls="parkList"
 				align="center"
 				first-number
 				last-number 
