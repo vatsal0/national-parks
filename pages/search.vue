@@ -40,7 +40,7 @@ export default {
 		return {
 			query: '',
 			results: [],
-			loading: false
+			loading: true
 		}
 	},
 	methods: {

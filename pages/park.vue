@@ -39,10 +39,15 @@ export default {
 		}
 	}, 
 	created() {
-		parkAPI.getPark(this.$route.query.parkCode).then(data => {
-			this.parkData = data.data.data[0]
+		if (this.$route.query.parkCode.match('^[a-z]{4}')) {
+			parkAPI.getPark(this.$route.query.parkCode).then(data => {
+				this.parkData = data.data.data[0]
+				this.loading = false
+			})
+		} else {
 			this.loading = false
-		})
+			this.parkData = undefined
+		}
 	}
 }
 </script>

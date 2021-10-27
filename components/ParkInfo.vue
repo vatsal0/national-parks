@@ -97,7 +97,7 @@
 				>
 				<template v-slot:img>
 					<b-aspect aspect="16:9">
-						<b-img-lazy :src="image.url" height="625rem" />
+						<b-img :src="image.url" height="625rem" />
 					</b-aspect>
 				</template>
 				</b-carousel-slide>
