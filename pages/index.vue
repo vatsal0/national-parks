@@ -1,6 +1,7 @@
 <template>
 	<div>
 		<Navbar />
+		
 		<b-container v-if="activities.length == 0 || this.allParks.length == 0" class="d-flex mt-3">
 			<div class="justify-content-center align-items-center mx-auto text-center">
 				<h3>Loading data, hold on...</h3>
@@ -29,25 +30,7 @@
 			</div>
 			
 			<div v-else-if="parks.length > 0">
-				<b-pagination
-				v-model="page"
-				:total-rows="parks.length"
-				:per-page="5"
-				align="center"
-				first-number
-				last-number 
-				pills/>
-				<b-list-group>
-						<ParkCard v-for="park in parkPage" :key="park.parkCode" :park="park" />
-				</b-list-group>
-				<b-pagination
-				v-model="page"
-				:total-rows="parks.length"
-				:per-page="5"
-				align="center"
-				first-number
-				last-number 
-				pills/>
+				<ParksPage :parks="parks" />
 			</div>
 
 			<div v-else-if="selected.length > 0" class="text-center">
@@ -62,12 +45,12 @@
 <script>
 import parkAPI from '../utils/parkAPI.js'
 import Navbar from '../components/Navbar.vue'
-import ParkCard from '../components/ParkCard.vue'
+import ParksPage from '../components/ParksPage.vue'
 
 export default {
 	components: {
 		Navbar,
-		ParkCard
+		ParksPage
 	},
 	data() {
 		return {
@@ -76,14 +59,7 @@ export default {
 			activities: [],
 			selected: [],
 			loading: false,
-			parks: [],
-			page: 1,
-			parkPage: []
-		}
-	},
-	methods: {
-		loadPage(page) {
-			this.parkPage = this.parks.slice((page - 1) * 5, page * 5)
+			parks: []
 		}
 	},
 	head() {
@@ -91,7 +67,7 @@ export default {
 			title: "National Park Service Info"
 		}
 	},
-	mounted() {
+	created() {
 		parkAPI.getAllActivities().then(data => {
 			this.activities = data.data.data
 		})
@@ -99,7 +75,6 @@ export default {
 		parkAPI.getAllParks().then(data => {
 			this.allParks = data.data.data
 			this.parks = this.allParks
-			this.loadPage(this.page)
 		})
 	},
 	watch: {
@@ -111,11 +86,13 @@ export default {
 				parkAPI.getParksByActivity(indexList).then(data => {
 					var activityData = data.data.data
 
-					// Merge the results in linear time
+					// The API gives us a list of parks for each activity, which can be merged using a hash map in linear time.
+					// This is more efficient than checking every possible park matching each activity.
 					var parkCodeTable = {}
 
+					// Maintain a counter for how many times a park is seen in every activity list (for n activities)
 					activityData.forEach((activity, i) => {
-						activity.parks.forEach((park, j) => {
+						activity.parks.forEach((park) => {
 							if (i == 0) {
 								parkCodeTable[park.parkCode] = 1
 							} else if (park.parkCode in parkCodeTable) {
@@ -124,21 +101,13 @@ export default {
 						})
 					});
 
+					// If the counter for a park is n at the end, then it matched every given activity.
 					this.parks = this.allParks.filter(park => park.parkCode in parkCodeTable && parkCodeTable[park.parkCode] == activityData.length)
 					this.loading = false
-
-
-					this.page = 1
-					this.loadPage(this.page)
 				})
 			} else {
 				this.parks = this.allParks
-				this.page = 1
-				this.loadPage(this.page)
 			}
-		},
-		page(newPage) {
-			this.loadPage(newPage)
 		}
 	}
 }

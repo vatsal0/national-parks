@@ -1,6 +1,7 @@
 <template>
 	<div>
 		<Navbar />
+
 		<b-container v-if="loading" class="d-flex mt-3">
 			<div class="justify-content-center align-items-center mx-auto text-center">
 				<h3>Fetching results...</h3>
@@ -13,25 +14,7 @@
 				<div class="justify-content-center align-items-center mx-auto text-center my-3">
 					<h3>Search results for "{{query}}"</h3>
 				</div>
-				<b-pagination
-				v-model="page"
-				:total-rows="results.length"
-				:per-page="5"
-				align="center"
-				first-number
-				last-number 
-				pills/>
-				<b-list-group>
-						<ParkCard v-for="park in parkPage" :key="park.parkCode" :park="park" />
-				</b-list-group>
-				<b-pagination
-				v-model="page"
-				:total-rows="results.length"
-				:per-page="5"
-				align="center"
-				first-number
-				last-number 
-				pills/>
+				<ParksPage :parks="results" />
 			</div>
 			<div v-else>
 				<div class="justify-content-center align-items-center mx-auto text-center">
@@ -46,20 +29,18 @@
 <script>
 import parkAPI from '../utils/parkAPI.js'
 import Navbar from '../components/Navbar.vue'
-import ParkCard from '../components/ParkCard.vue'
+import ParksPage from '../components/ParksPage.vue'
 
 export default {
 	components: {
 		Navbar,
-		ParkCard
+		ParksPage
 	},
 	data() {
 		return {
 			query: '',
 			results: [],
-			loading: false,
-			parkPage: [],
-			page: 1
+			loading: false
 		}
 	},
 	methods: {
@@ -69,13 +50,8 @@ export default {
 			
 			parkAPI.getAllParks().then(data => {
 				this.results = data.data.data.filter(park => park.name.toLowerCase().includes(query.toLowerCase()))
-				this.page = 1
-				this.loadPage(this.page)
 				this.loading = false
 			}) 
-		},
-		loadPage(page) {
-			this.parkPage = this.results.slice((page - 1) * 5, page * 5)
 		}
 	},
 	head() {
@@ -84,19 +60,15 @@ export default {
 		}
 	},
 	beforeRouteUpdate(to, from, next) {
-		// Vue router does not reload the page if redirected to the same link with different query parameters. So, we search again manually.
+		// Vue router does not reload the page if redirected to the same link with different query parameters.
+		// So, we search again manually.
 		if (from.query.query != to.query.query) {
 			this.search(to.query.query)
 		}
     next()
   },
-	mounted() {
+	created() {
 		this.search(this.$route.query.query)
-	},
-	watch: {
-		page(newPage) {
-			this.loadPage(newPage)
-		}
 	}
 }
 </script>

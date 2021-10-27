@@ -13,13 +13,11 @@
 </template>
 
 <script>
-import parkAPI from '../utils/parkAPI.js'
 
 export default {
 	data() {
 		return {
-			parkSearch: '',
-			parks: []
+			parkSearch: ''
 		}
 	},
 	methods: {
@@ -27,11 +25,6 @@ export default {
 			if (this.parkSearch.trim().length > 0)
 			this.$router.push({path: '/search', query: { query: this.parkSearch.trim().toLowerCase()}})
 		}
-	},
-	mounted() {
-		parkAPI.getAllParks().then(data => {
-			this.parks = data.data.data
-		}) 
 	}
 }
 </script>

@@ -38,7 +38,7 @@ export default {
 			title: this.parkData ? this.parkData.fullName : "Park not found."
 		}
 	}, 
-	mounted() {
+	created() {
 		parkAPI.getPark(this.$route.query.parkCode).then(data => {
 			this.parkData = data.data.data[0]
 			this.loading = false
